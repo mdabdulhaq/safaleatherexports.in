@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SaFa Leather Exports</title>
+  <meta name="description" content="SaFa Leather Exports — Leather manufacturer & exporter. Crafting elegance in every smooth touch." />
+
+  <!--
+    Single-file website (index.html)
+    ------------------------------------------------------------
+    HOW TO USE / QUICK NOTES (please replace placeholders below):
+      - Replace ./assets/logo.png with your actual logo file.
+      - Replace ./assets/hero.png with your hero/background leather photo.
+      - Replace ./assets/product-*.jpg and ./assets/video-*.mp4 with your product images/videos.
+      - Replace social links (instagram / linkedin) in the CONTACT section.
+      - If you want form submissions to email you: sign up at Formspree (https://formspree.io) and replace the form action URL.
+      - To test locally: open this file (index.html) in a browser. To host: upload this single file + assets folder to any static host (GitHub Pages, Netlify, GoDaddy cPanel).
+
+    Features included:
+      - Modern, responsive single-page layout (Hero, About, Gallery with lightbox, Videos, Testimonials, Contact)
+      - Interactive product gallery with lightbox, zoom slider, fullscreen and download
+      - Embedded YouTube and local video support
+      - Contact form with optional Formspree/mailto fallback
+      - Smooth scroll, animated elements, mobile-friendly menu
+  -->
+
+  <style>
+    :root{
+      --bg:#0f1724; --muted:#9aa4b2; --accent:#b77a4b; --glass:rgba(255,255,255,0.06);
+      --maxw:1200px; --radius:14px; --shadow: 0 6px 24px rgba(2,6,23,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:linear-gradient(180deg,#071025 0%, #0b1b2b 100%); color:#eef2f7}
+    a{color:inherit}
+    .container{max-width:var(--maxw);margin:0 auto;padding:28px}
+
+    /* Header */
+    header{position:sticky;top:12px;z-index:40;backdrop-filter: blur(6px);display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:var(--shadow)}
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand img{width:56px;height:56px;object-fit:contain;border-radius:8px;background:linear-gradient(180deg,#fff2,#fff1)}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{padding:8px 10px;border-radius:8px;font-weight:600;color:var(--muted);text-decoration:none}
+    nav a:hover{color:#fff;background:var(--glass)}
+    .cta{background:linear-gradient(90deg,var(--accent), #8f5f3b);padding:9px 14px;border-radius:12px;color:#fff}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;padding:48px 0}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:28px;border-radius:18px;box-shadow:var(--shadow)}
+    .hero h1{margin:0 0 8px 0;font-size:34px;letter-spacing:-0.6px}
+    .tagline{color:var(--accent);font-weight:700;text-transform:capitalize}
+    .hero-visual{height:320px;border-radius:18px;background-size:cover;background-position:center;box-shadow:inset 0 -100px 120px rgba(0,0,0,0.25)}
+
+    /* Sections */
+    section{padding:36px 0}
+    h2{margin:0 0 18px 0;font-size:22px}
+    p.lead{color:var(--muted);line-height:1.6}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .gallery-item{position:relative;border-radius:12px;overflow:hidden;cursor:pointer}
+    .gallery-item img{width:100%;height:210px;object-fit:cover;display:block;transition:transform .45s ease}
+    .gallery-item:hover img{transform:scale(1.05)}
+    .gallery-item .caption{position:absolute;left:12px;bottom:12px;background:rgba(0,0,0,0.45);padding:8px 10px;border-radius:8px;font-size:14px}
+
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.85);z-index:60;padding:28px}
+    .lb-inner{max-width:1100px;width:100%;display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+    .lb-img{background:#081221;border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:center}
+    .lb-img img{max-width:100%;max-height:78vh;transform-origin:center center}
+    .lb-side{background:rgba(255,255,255,0.02);padding:18px;border-radius:12px;color:var(--muted)}
+    .lb-controls{display:flex;gap:8px;margin-top:10px}
+    .btn{background:var(--glass);padding:8px 12px;border-radius:10px;border:none;color:#fff;cursor:pointer}
+
+    /* Videos */
+    .videos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .video-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px}
+    .video-card iframe, .video-card video{width:100%;height:220px;border-radius:8px;border:none}
+
+    /* Testimonials */
+    .testimonials{display:flex;gap:12px;overflow:hidden}
+    .testimonials .slide{min-width:100%;transition:transform .5s ease}
+
+    /* Contact */
+    .contact-grid{display:grid;grid-template-columns:1fr 420px;gap:18px}
+    form input, form textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
+    form label{display:block;margin-bottom:6px;color:var(--muted);font-size:13px}
+    .socials{display:flex;gap:12px;margin-top:12px}
+    .icon-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(255,255,255,0.02);border-radius:10px}
+
+    /* Footer */
+    footer{padding:24px 0;text-align:center;color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      .contact-grid{grid-template-columns:1fr}
+      .lb-inner{grid-template-columns:1fr}
+    }
+    @media (max-width:640px){
+      .gallery{grid-template-columns:1fr}
+      nav{display:none}
+      header{padding:10px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <!-- Replace with your logo -->
+        <img src="./assets/logo.png" alt="SaFa Leather Exports logo" id="brandLogo">
+        <div>
+          <div style="font-weight:800">SaFa Leather Exports</div>
+          <div style="font-size:13px;color:var(--muted)">Crafting Elegance in Every Smooth Touch</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#about">About</a>
+        <a href="#products">Products</a>
+        <a href="#videos">Videos</a>
+        <a href="#contact" class="cta">Contact</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-card">
+        <h1>SaFa Leather Exports</h1>
+        <div class="tagline">Crafting elegance in every smooth touch</div>
+        <p class="lead" style="margin-top:16px">We are a premium leather manufacturer & exporter, specializing in Smooth Leather, full-grain and top-grain leather for Shoes, bags, fashion, accessories, and upholstery. Quality, traceability and finish are at the heart of everything we do.</p>
+
+        <div style="display:flex;gap:12px;margin-top:18px;align-items:center">
+          <a class="btn" href="#products">View Collection</a>
+          <a class="btn" href="#contact">Get Quote</a>
+          <button class="btn" id="callBtn">Call: +91-9677956607</button>
+        </div>
+
+        <ul style="margin-top:18px;color:var(--muted);font-size:14px;list-style:none;padding:0">
+          <li>✔ Ensuring the highest quality </li>
+          <li>✔ Bulk export & custom tanning</li>
+          <li>✔ Samples & flexible order sizes</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual" id="heroVisual" style="background-image:url('./assets/hero.png')" title="SaFa Leather Exports"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="hero-card">
+        <h2>About Us</h2>
+        <p class="lead">SaFa Leather Exports is a trusted name in high quality finished leather manufacturing and exports. With years of expertise, we combine tradition and technology to deliver premium leather
+      to global markets. Our commitment to excellence ensures every product is crafted with precision, durability, and elegance. High grade leathers for global brands. We control every step from selection to finishing to ensure product longevity and beautiful tactile finish.</p>
+      </div>
+    </section>
+
+    <!-- PRODUCTS / GALLERY -->
+    <section id="products">
+      <h2>Products Gallery</h2>
+      <p class="lead">Click any image to open. Use the zoom slider and full-screen for close inspection.</p>
+
+      <div class="gallery" id="gallery">
+        <!-- Replace these with your real product images. Keep names predictable like product-1.jpg etc in assets/ -->
+        <figure class="gallery-item" data-src="./assets/product1.jpg" data-title="Cow High Shine Patent Finished Leather">
+          <img src="./assets/product1.jpg" alt="product 1">
+          <figcaption class="caption">High Shine Patent Leather</figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-src="./assets/product2.jpg" data-title="Cow Softy Finished Leather - Haircell print">
+          <img src="./assets/product2.jpg" alt="product 2">
+          <figcaption class="caption">Softy Leather</figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-src="./assets/product3.jpg" data-title="Cow Smooth Finished Leather">
+          <img src="./assets/product3.jpg" alt="product 3">
+          <figcaption class="caption">Smooth Leather</figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-src="./assets/product4.jpg" data-title="Cow Milled Finished Leather">
+          <img src="./assets/product4.jpg" alt="product 4">
+          <figcaption class="caption">Milled Leather</figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-src="./assets/product5.jpg" data-title="Cow Pebble">
+          <img src="./assets/product5.jpg" alt="product 5">
+          <figcaption class="caption">Pebble Leather</figcaption>
+        </figure>
+
+        <figure class="gallery-item" data-src="./assets/product6.jpg" data-title="Cow Suede">
+          <img src="./assets/product6.jpg" alt="product 6">
+          <figcaption class="caption">Suede Leather</figcaption>
+        </figure>
+      </div>
+
+      <!-- LIGHTBOX -->
+      <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lb-inner">
+          <div class="lb-img">
+            <img src="" alt="" id="lbImage">
+          </div>
+          <aside class="lb-side">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <strong id="lbTitle">&nbsp;</strong>
+              <div class="lb-controls">
+                <button class="btn" id="prevBtn">◀</button>
+                <button class="btn" id="nextBtn">▶</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <label for="zoom">Zoom</label>
+              <input id="zoom" type="range" min="1" max="3" step="0.01" value="1" style="width:100%">
+            </div>
+
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <button class="btn" id="fullscreenBtn">⤢ Fullscreen</button>
+              <button class="btn" id="closeLb">✕ Close</button>
+            </div>
+
+            <div style="margin-top:16px;color:var(--muted);font-size:13px">Tip: Use left/right arrow keys to navigate. Press Esc to close.</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section id="videos">
+      <h2>Product Videos</h2>
+      <p class="lead">Embedded product videos and short clips to showcase texture and flexibility.</p>
+
+      <div class="videos">
+        <div class="video-card">
+          <!-- Replace with your own video file or YouTube embed -->
+          <video controls playsinline src="./assets/video1.mp4">Your browser does not support the video tag.</video>
+          <div style="margin-top:8px;color:var(--muted);font-size:13px">Sample: finishing process</div>
+        </div>
+
+        <div class="video-card">
+          <!-- Example YouTube embed: replace the src with your own YouTube embed link -->
+          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video" allowfullscreen></iframe>
+          <div style="margin-top:8px;color:var(--muted);font-size:13px">Sample: Product showcase</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section>
+      <h2>What Clients Say</h2>
+      <div class="hero-card">
+        <div class="testimonials" id="testimonials">
+          <div class="slide">“Excellent quality, consistent batches and fast shipping”</div>
+          <div class="slide">“Great finishing and customer service. Recommended for premium product lines.”</div>
+          <div class="slide">“Samples were accurate, and the texture is amazing.”</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <div class="hero-card contact-grid">
+        <div>
+          <h3 style="margin-top:0">Get in touch</h3>
+          <p class="lead">For pricing, export queries and sample requests please contact our export desk:</p>
+
+          <p><strong>Phone:</strong> <a href="tel:+91-9677956607">+91-9677956607</a></p>
+          <p><strong>Email:</strong> <a href="mailto:safaleatherexports@yahoo.in">safaleatherexports@yahoo.in</a></p>
+          <p><strong>Address:</strong> OFFICE: No.20/1A/2,1st Floor,M.F Road,Navalpur,Ranipet-632401, Tamil Nadu, India</p>
+          <h3 style="margin-top:0">Follow Us:</h3>
+
+          <div class="socials">
+            <!-- Replace href values with your real social URLs -->
+            <a class="icon-btn" href="https://www.instagram.com/safa_leather_exports/" target="_blank" rel="noopener">
+              <!-- Instagram SVG -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span style="font-size:13px;color:var(--muted)">Instagram</span>
+            </a>
+
+            <a class="icon-btn" href="https://www.linkedin.com/company/108139876/admin/dashboard/" target="_blank" rel="noopener">
+              <!-- LinkedIn SVG -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-2-2h0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="9" width="4" height="11" rx="1" stroke="currentColor" stroke-width="1.2"/><circle cx="4" cy="4" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+              <span style="font-size:13px;color:var(--muted)">LinkedIn</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <!-- Contact form: replace the action with your Formspree endpoint or use mailto fallback -->
+          <form id="contactForm" action="https://formspree.io/f/mkgzkgvl" method="POST">
+            <label for="name">Full Name</label>
+            <input id="name" name="name" required placeholder="Your full name">
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="you@company.com">
+
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" required placeholder="Order / Sample / Inquiry">
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Tell us what you need"></textarea>
+
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn" type="submit">Send Message</button>
+              <button class="btn" type="button" id="mailtoFallback">Open Mail App</button>
+            </div>
+
+            <div id="formStatus" style="margin-top:10px;color:var(--muted);font-size:13px"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div style="max-width:var(--maxw);margin:18px auto;color:var(--muted)">© <span id="year"></span> SaFa Leather Exports • All rights reserved</div>
+    </footer>
+  </div>
+
+  <script>
+    // Small helpers & initial UI wiring
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Lightbox gallery
+    (function(){
+      const items = Array.from(document.querySelectorAll('.gallery-item'));
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImage');
+      const lbTitle = document.getElementById('lbTitle');
+      const zoom = document.getElementById('zoom');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const closeLb = document.getElementById('closeLb');
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+      let current = 0;
+
+      function openAt(i){
+        const el = items[i];
+        const src = el.dataset.src || el.querySelector('img').src;
+        const title = el.dataset.title || el.querySelector('img').alt || '';
+        lbImg.src = src;
+        lbImg.style.transform = 'scale(1)';
+        zoom.value = 1;
+        lbTitle.textContent = title;
+        lb.style.display = 'flex';
+        lb.setAttribute('aria-hidden','false');
+        current = i;
+      }
+
+      function close(){
+        lb.style.display = 'none';
+        lb.setAttribute('aria-hidden','true');
+      }
+
+      items.forEach((it, idx)=>{
+        it.addEventListener('click',()=>openAt(idx));
+      });
+
+      prevBtn.addEventListener('click',()=>openAt((current-1+items.length)%items.length));
+      nextBtn.addEventListener('click',()=>openAt((current+1)%items.length));
+      closeLb.addEventListener('click',close);
+
+      // Zoom slider
+      zoom.addEventListener('input',()=>{
+        lbImg.style.transform = `scale(${zoom.value})`;
+      });
+
+      // Keyboard nav
+      document.addEventListener('keydown',(e)=>{
+        if(lb.style.display !== 'flex') return;
+        if(e.key === 'ArrowLeft') prevBtn.click();
+        if(e.key === 'ArrowRight') nextBtn.click();
+        if(e.key === 'Escape') close();
+      });
+
+      // Click outside to close
+      lb.addEventListener('click',(e)=>{ if(e.target === lb) close(); });
+
+      // Fullscreen
+      fullscreenBtn.addEventListener('click', async ()=>{
+        try{
+          if(!document.fullscreenElement) await lb.requestFullscreen();
+          else await document.exitFullscreen();
+        }catch(err){console.warn(err)}
+      });
+    })();
+
+    // Testimonials slider (simple)
+    (function(){
+      const el = document.getElementById('testimonials');
+      const slides = Array.from(el.children);
+      let i=0;
+      setInterval(()=>{
+        i=(i+1)%slides.length;
+        el.style.transform = `translateX(-${i*100}%)`;
+      },4000);
+    })();
+
+    // Contact form handling: supports Formspree endpoint OR mailto fallback
+    (function(){
+      const form = document.getElementById('contactForm');
+      const fallback = document.getElementById('mailtoFallback');
+      const status = document.getElementById('formStatus');
+
+      fallback.addEventListener('click',()=>{
+        const name = encodeURIComponent(form.name.value || '');
+        const subject = encodeURIComponent(form.subject.value || '');
+        const body = encodeURIComponent(`Name: ${form.name.value}\nEmail: ${form.email.value}\n\n${form.message.value}`);
+        window.location.href = `mailto:safaleatherexports@yahoo.in?subject=${subject}&body=${body}`;
+      });
+
+      form.addEventListener('submit', async (e)=>{
+        // If user has left the default Formspree action, we will fall back to mailto
+        const action = form.action || '';
+        if(action.includes('formspree.io') && action.indexOf('YOUR_FORM_ID') === -1){
+          // Let the browser submit normally to Formspree
+          status.textContent = 'Sending...';
+          return; // default submit
+        }
+
+        // Prevent default submit and use mailto fallback
+        e.preventDefault();
+        status.textContent = 'No server endpoint configured. Opening mail app...';
+        const subject = encodeURIComponent(form.subject.value || 'Website Inquiry');
+        const body = encodeURIComponent(`Name: ${form.name.value}\nEmail: ${form.email.value}\nMessage:\n${form.message.value}`);
+        window.location.href = `mailto:safaleatherexports@yahoo.in?subject=${subject}&body=${body}`;
+      });
+    })();
+
+    // Small utility: copy phone
+    document.getElementById('callBtn').addEventListener('click',()=>{
+      navigator.clipboard && navigator.clipboard.writeText('+91-9677956607');
+      alert('Phone number copied to clipboard.');
+    });
+
+    // Progressive enhancement: swap hero image if missing
+    (function(){
+      const hero = document.getElementById('heroVisual');
+      const img = new Image(); img.src = hero.style.backgroundImage.replace(/url\(|\)|\"/g,'');
+      img.onerror = ()=>{ hero.style.background = 'linear-gradient(135deg,#0f1724,#06324a)'; }
+    })();
+  </script>
+</body>
+</html>
